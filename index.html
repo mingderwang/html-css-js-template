@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<style>
+  body {
+    display: grid;
+    place-content: center;
+    min-height: 100vh;
+  }
+  
+  #skypack-preact, #skypack-preact-emotion {
+    border: 1px dashed;
+    padding: 1rem;
+  }
+</style>
+
+<h1>preact + emotion <i>via</i> skypack</h1>
+
+<figure>
+  <div id="skypack-preact"></div>
+  <figcaption>no style</figcaption>
+</figure>
+
+<figure>
+  <div id="skypack-preact-emotion"></div>
+  <figcaption>styled with emotion</figcaption>
+</figure>
+
+
+
+<script type="module">
+  import { h, render } from 'https://cdn.skypack.dev/preact';
+  import { useState } from 'https://cdn.skypack.dev/preact/hooks';
+
+  const Counter = () => {
+    const [count, setCount] = useState(0)
+  
+    return h(
+      'div',
+      {},
+      h('h1', {}, count),
+      h('button', { onClick: () => setCount(count - 1) }, '-'),
+      h('button', { onClick: () => setCount(count + 1) }, '+'),
+    )
+  }
+
+  render(h(Counter), document.getElementById('skypack-preact'))
+</script>
+
+<script type="module">
+  import { h, render } from 'https://cdn.skypack.dev/preact';
+  import { useState } from 'https://cdn.skypack.dev/preact/hooks';
+  import { css } from "https://cdn.skypack.dev/@emotion/css";
+
+  const root = css`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    color: purple;
+    button:nth-of-type(1) {
+      order: -1;
+    }
+    button:hover {
+      transform: scale(2);
+    }
+    button {
+      transition: transform 0.3s ease;
+      font-family: monospace;
+    }
+  `;
+
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+
+    return h(
+      "div",
+      { class: root },
+      h("h1", {}, count),
+      h("button", { onClick: () => setCount(count - 1) }, "-"),
+      h("button", { onClick: () => setCount(count + 1) }, "+"),
+    );
+  };
+
+  render(h(Counter), document.getElementById('skypack-preact-emotion'))
+</script>
